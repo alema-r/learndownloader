@@ -14,15 +14,17 @@ bash -c "$curl_command -s --compressed" > $cachedir/tmp.html
 cookies=$(echo "$curl_command" | grep -oP "\-H 'Cookie:.*?'")
 useragent=$(echo "$curl_command" | grep -oP "\-H 'User-Agent:.*?'")
 
-rm $cachedir/finalurls.txt
+echo -n "" > $cachedir/finalurls.txt
+
+#echo "" > $cachedir/finalurls.txt
 
 echo "Retrieving urls..."
 grep -o 'href=\"https:\/\/learn\.univpm\.it\/mod\/resource\/view\.php?id\=[0-9]*\"' $cachedir/tmp.html | sed 's/href=//' | tr -d '"' > $cachedir/urls.txt
 grep -oP 'href=\"https:\/\/learn\.univpm\.it\/pluginfile\.php\/[0-9]{6}/course\/section\/[0-9]{6}\/.*?\.pdf\"' $cachedir/tmp.html | sed 's/href=//' | tr -d '"' >> $cachedir/finalurls.txt
 
 while read url; do
-	echo "" >> $cachedir/finalurls.txt
 	bash -c "curl $url $cookies $useragent -kIs -w %{redirect_url} -o /dev/null" >> $cachedir/finalurls.txt
+	echo "" >> $cachedir/finalurls.txt
 done < "$cachedir/urls.txt"
 
 echo "Downloading files..."
