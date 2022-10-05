@@ -24,8 +24,17 @@ learndownloader "curl_command"
 
 ### SSL Legacy renegotiation
 If the site you're accessing uses a TLS version < 1.3, you can use the custom openssl config to avoid the problem.
-Just type:
+
+Create a config directory and download the openssl config:
 ```
-export OPENSSL_CONF=/usr/local/bin/learndownloader/openssl.conf; learndownloader "curl command"
+mkdir ~/.config/learndownloader
+curl -sL "https://raw.githubusercontent.com/alema-r/learndownloader/main/openssl.conf" -o ~/.config/learndownloader/openssl.conf
 ```
 
+Then, just type:
+```
+export OPENSSL_CONF=~/.config/learndownloader/openssl.conf; learndownloader "curl command"
+```
+
+## Windows
+To use with windows you can use WSL or Git bash and follow the same steps above.
