@@ -10,6 +10,15 @@ curl_command="$@"
 
 echo "Getting HTML page..."
 bash -c "$curl_command -s --compressed" > $cachedir/tmp.html
+if [ $? -eq 35 ]
+then
+    echo "It seems that the site specified uses a TLS version < 1.3."
+    echo "Run these commands to get it to work:"
+    echo "mkdir -p ~/.config/learndownloader"
+    echo "curl -sL \"https://raw.githubusercontent.com/alema-r/learndownloader/main/openssl.conf\" -o ~/.config/learndownloader/openssl.conf"
+    echo "Now prefix the command with: OPENSSL_CONF=~/.config/learndownloader/openssl.conf"
+    exit 1
+fi
 
 cookies=$(echo "$curl_command" | grep -oP "\-H 'Cookie:.*?'")
 useragent=$(echo "$curl_command" | grep -oP "\-H 'User-Agent:.*?'")
@@ -32,7 +41,9 @@ count=0
 while read finalurl; do
 	filename=$(echo "$finalurl" | sed "s/^.*\///" | sed "s/%20/_/g" | sed "s/\?.*$//")
 	bash -c "curl -s $finalurl $cookies $useragent -o $filename"
+    echo "Downloaded: $filename"
 	count=$((count+1))
 done < "$cachedir/finalurls.txt"
 
 echo "$count file downloaded."
+exit 0
