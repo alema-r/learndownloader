@@ -27,13 +27,13 @@ If the site you're accessing uses a TLS version < 1.3, you can use the custom op
 
 Create a config directory and download the openssl config:
 ```
-mkdir ~/.config/learndownloader
+mkdir -p ~/.config/learndownloader
 curl -sL "https://raw.githubusercontent.com/alema-r/learndownloader/main/openssl.conf" -o ~/.config/learndownloader/openssl.conf
 ```
 
 Then, just type:
 ```
-export OPENSSL_CONF=~/.config/learndownloader/openssl.conf; learndownloader "curl command"
+OPENSSL_CONF=~/.config/learndownloader/openssl.conf learndownloader "curl command"
 ```
 
 ## Windows
