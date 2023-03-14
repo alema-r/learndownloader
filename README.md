@@ -1,16 +1,16 @@
 # Learn Downloader
 
-Download all files from learn courses!
+Download all files from https://learn.univpm.it courses!
 
 ## Installation
 ```
-sudo curl -sL "https://raw.githubusercontent.com/alema-r/learndownloader/main/learndownloader" -o /usr/local/bin/learndownloader
-sudo chmod +x /usr/local/bin/learndownloader
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/alema-r/learndownloader/main/install.sh)"
 ```
+This will install the script in `/usr/local/bin/learndownloader` and so sudo privileges are required.
 
 ## Usage
 - Login and go to the learn course 
-- Open the developer tools (`CTRL+I`)
+- Open the developer tools (<kbd>Ctrl + Shift + I</kbd> or <kbd>F12</kbd>)
 - Head to the Network tab
 - Reload the page
 - Filter for HTML only
@@ -21,20 +21,11 @@ sudo chmod +x /usr/local/bin/learndownloader
 learndownloader "curl_command"
 ```
 - All the files are now downloaded in the current folder
+- Alternatively, you can specify a custom directory where to download files using the `-d` option, like so:
+```
+learndownloader -d mydir "curl_command"
+```
 
 ### SSL Legacy renegotiation
-If the site you're accessing uses a TLS version < 1.3, you can use the custom openssl config to avoid the problem.
-
-Create a config directory and download the openssl config:
-```
-mkdir -p ~/.config/learndownloader
-curl -sL "https://raw.githubusercontent.com/alema-r/learndownloader/main/openssl.conf" -o ~/.config/learndownloader/openssl.conf
-```
-
-Then, just type:
-```
-OPENSSL_CONF=~/.config/learndownloader/openssl.conf learndownloader "curl command"
-```
-
-## Windows
-To use with windows you can use WSL or Git bash and follow the same steps above.
+By default a custom openssl config is used because https://learn.univpm.it uses a TLS version < 1.3.
+The openssl config is stored at `~/.config/learndownloader/openssl.conf`.
