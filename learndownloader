@@ -2,8 +2,8 @@
 usage()
 {
     echo "usage: learndownloader [-d <output_dir>] \"curl_command\""
-    echo "  -d, --dir               directory to save files to"
-    echo "  -h, --help              shows this message and exit"
+    echo "  -d  directory to save files to"
+    echo "  -h  shows this message and exit"
 }
 
 while getopts 'd:h' option; do
@@ -64,6 +64,12 @@ while read finalurl; do
     then
         filename="$dir/$filename"
     fi
+    
+    if test -f "$filename"; then
+        echo "Skipped: $filename already exists"
+        continue
+    fi
+
 
 	bash -c "OPENSSL_CONF=$openssl_conf curl -s $finalurl $cookies $useragent -o $filename"
     echo "Downloaded: $filename"
