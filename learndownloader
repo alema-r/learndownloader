@@ -1,7 +1,7 @@
 #!/bin/bash
 usage()
 {
-    echo "usage: setup.sh [-dmr] [-s|-t]"
+    echo "usage: learndownloader [-d <output_dir>] \"curl_command\""
     echo "  -d, --dir               directory to save files to"
     echo "  -h, --help              shows this message and exit"
 }
